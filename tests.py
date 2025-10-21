@@ -3,7 +3,7 @@ from functions.run_python_file import run_python_file
 def main():
    run1=run_python_file("calculator", "main.py") 
    print(run1)
-   run2=run_python_file("calculator", "main.py",['6 + 9'])
+   run2=run_python_file("calculator", "main.py",['3 + 5'])
    print(run2)
    run3=run_python_file("calculator", "tests.py")
    print(run3)
