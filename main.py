@@ -8,7 +8,7 @@ from functions.get_files_info import schema_get_files_info
 from functions.get_file_content import schema_get_file_content
 from functions.run_python_file import schema_run_python_file
 from functions.write_file import schema_write_file
-
+from call_function import call_function
 load_dotenv()
 api_key = os.environ.get("GEMINI_API_KEY")
 client = genai.Client(api_key=api_key)
@@ -61,9 +61,17 @@ All paths you provide should be relative to the working directory. You do not ne
 
     if response.function_calls: 
         fc = response.function_calls[0]
-        print(f"Calling function: {fc.name}({fc.args})")
-    else:
+        function_call_result = call_function(fc, verbose=args.verbose)
+
+        if not function_call_result.parts:
+            raise RuntimeError("Function call returned invalid tool content")
+
+
+        if args.verbose:
+            print(f"-> {function_call_result.parts[0].function_response.response}")
+        
+    else: 
         print(response.text)
-    
+
 if __name__ == "__main__":
     main()
